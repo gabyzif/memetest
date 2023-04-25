@@ -2,7 +2,7 @@ import Image from 'next/image';
 import s from './Piece.module.css';
 import { useState } from 'react';
 
-interface IPiece {
+export interface IPiece {
   src: string;
   alt: string;
   number?: string;
@@ -19,7 +19,7 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number }) => {
   return (
     <button
       className={`${s.container}`}
-      style={{ position: 'relative', width: '300px', height: '300px' }}
+      style={{ position: 'relative', width: '200px', height: '200px' }}
       onClick={handleFlip}
     >
       <div className={`${s.card} ${flip ? s.flipped : ''}`} style={{ width: '100%', height: '100%' }}>
