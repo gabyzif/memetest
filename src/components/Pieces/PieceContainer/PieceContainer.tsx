@@ -6,12 +6,13 @@ interface IPieceContainer {
   piece: IPiece[];
 }
 const PieceContainer: React.FC<IPieceContainer> = ({ piece }) => {
+  console.log(piece);
   const [guess, setGuess] = useState(false);
   return (
     <Container width="60vw">
       <div className="grid grid-cols-4 gap-3">
-        {piece.map((p, i) => (
-          <Piece key={i} src={p.src} alt={p.alt} number={String(i + 1)} guess={guess} />
+        {piece.map(({ attributes: p }, i) => (
+          <Piece key={i} src={p.url} alt={p.alt} number={String(i + 1)} guess={guess} />
         ))}
       </div>
     </Container>

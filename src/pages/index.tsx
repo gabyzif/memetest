@@ -2,7 +2,8 @@ import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 
-export default function Home() {
+export default function Home({ categories }) {
+  console.log(categories);
   return (
     <main>
       <div>
@@ -13,12 +14,7 @@ export default function Home() {
               <p className=" font-thin">Choose a category!</p>
             </div>
 
-            <ListButtons
-              categories={[
-                { name: 'test', score: '89' },
-                { name: 'test2', score: '89' }
-              ]}
-            />
+            {categories ? <ListButtons categories={categories} /> : <p>Loading...</p>}
             <div className="flex justify-center my-3 gap-3">
               <Button text="START" href="#" variant="secondary" />
               <Button text="CONTINUE" href="#" />
@@ -28,4 +24,19 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export async function getStaticProps() {
+  let categories;
+  try {
+    categories = await fetch(`${process.env.STRAPI_URL}api/categories`);
+    categories = await categories.json();
+  } catch (e) {
+    return e;
+  }
+  return {
+    props: {
+      categories: categories.data
+    } // will be passed to the page component as props
+  };
 }
