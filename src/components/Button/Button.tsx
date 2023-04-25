@@ -14,11 +14,8 @@ const Button: React.FC<ButtonProps> = ({ text, href, variant = 'primary', childr
   };
 
   return (
-    <Link
-      href={href}
-      className={`${color[variant]} text-gray-700 font-regular py-4 px-4 rounded-xl  shadow-lg`}
-    >
-      {text || children}
+    <Link href={href} className={`${color[variant]} text-gray-700  py-4 px-4 rounded-3xl shadow-lg`}>
+      {text ? <p className="font-bold">{text}</p> : children}
     </Link>
   );
 };

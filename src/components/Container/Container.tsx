@@ -4,8 +4,9 @@ interface IContainer {
   children: React.ReactNode;
   width?: string;
   variant?: 'primary' | 'secondary' | 'tertiary';
+  height?: string;
 }
-const Container: React.FC<IContainer> = ({ children, width = 200, variant = 'tertiary' }) => {
+const Container: React.FC<IContainer> = ({ children, width = 200, variant, height }) => {
   const color = {
     primary: 'bg-primary',
     secondary: 'bg-secondary ',
@@ -13,8 +14,10 @@ const Container: React.FC<IContainer> = ({ children, width = 200, variant = 'ter
   };
   return (
     <div
-      className={`${color[variant]} h-screen-3/4 m-auto my-10 bg-tertiary-light p-10 rounded-xl justify-center`}
-      style={{ width }}
+      className={`${
+        variant ? color[variant] : ''
+      } h-screen-3/4 m-auto my-10 bg-tertiary-light p-10 rounded-xl justify-center`}
+      style={{ width, height }}
     >
       {children}
     </div>

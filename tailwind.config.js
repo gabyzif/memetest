@@ -8,13 +8,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        body: ["'Fira Sans Extra Condensed', sans-serif;"]
+        body: ["'Fira Sans Extra Condensed', sans-serif;"],
+        play: ['Play, sans-serif;']
       },
       colors: {
         primary: {
-          light: '#FFFDED',
-          regular: '#FBF5C2',
-          dark: '#F7E99D'
+          light: '#FBF5C2',
+          regular: '#F7E99D',
+          dark: '#F3E075'
         },
         secondary: {
           light: '#EDF7FF',
