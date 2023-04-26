@@ -7,9 +7,11 @@ export interface IPiece {
   alt: string;
   number?: string;
   guess?: boolean;
+  width?: string;
+  height?: string;
 }
 
-const PieceFlip: React.FC<IPiece> = ({ src, alt, number }) => {
+const PieceFlip: React.FC<IPiece> = ({ src, alt, number, width, height }) => {
   const [flip, setFlip] = useState(false);
 
   const handleFlip = () => {
@@ -18,8 +20,8 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number }) => {
 
   return (
     <button
-      className={`${s.container}`}
-      style={{ position: 'relative', width: '200px', height: '200px' }}
+      className={`${s.container} m-10`}
+      style={{ position: 'relative', width, height }}
       onClick={handleFlip}
     >
       <div className={`${s.card} ${flip ? s.flipped : ''}`} style={{ width: '100%', height: '100%' }}>
@@ -43,9 +45,9 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number }) => {
   );
 };
 
-const PieceGuess: React.FC<IPiece> = ({ src, alt }) => {
+const PieceGuess: React.FC<IPiece> = ({ src, alt, width, height }) => {
   return (
-    <div style={{ position: 'relative', width: '300px', height: '300px' }}>
+    <div style={{ position: 'relative', width, height }} className="m-10">
       <Image
         src={src}
         alt={alt}
@@ -60,7 +62,11 @@ const PieceGuess: React.FC<IPiece> = ({ src, alt }) => {
   );
 };
 
-const Piece: React.FC<IPiece> = ({ src, alt, number, guess }) =>
-  guess ? <PieceGuess src={src} alt={alt} /> : <PieceFlip src={src} alt={alt} number={number} />;
+const Piece: React.FC<IPiece> = ({ src, alt, number, guess, width = '100px', height = '100px' }) =>
+  guess ? (
+    <PieceGuess src={src} alt={alt} width={width} height={height} />
+  ) : (
+    <PieceFlip src={src} alt={alt} number={number} height={height} />
+  );
 
 export default Piece;

@@ -13,7 +13,7 @@ const Page = ({ game }) => {
     { initialData: game }
   );
   return (
-    <Container>
+    <Container width="auto">
       {data ? <PieceContainer piece={data.data[0].attributes.images.data} /> : <p>Loading...</p>}
     </Container>
   );
