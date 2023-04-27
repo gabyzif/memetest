@@ -1,6 +1,6 @@
 import Container from '../../Container/Container';
 import Piece, { IPiece } from '../Piece/Piece';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IPieceContainer {
   piece: IPiece[];
@@ -20,16 +20,74 @@ function shuffleArray(array) {
 }
 
 const PieceContainer: React.FC<IPieceContainer> = ({ piece }) => {
-  let pieces = [...piece, ...piece];
-  pieces = shuffleArray(pieces);
+  const [openCards, setOpenCards] = useState([]);
+  const [clearedCards, setClearedCards] = useState({});
+  const [moves, setMoves] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const timeout = useRef(null);
+  const [cards, setCards] = useState([]);
 
-  const [guess, setGuess] = useState(false);
+  useEffect(() => {
+    let pieces = [...piece, ...piece];
+    pieces = shuffleArray(pieces.map((p, i) => ({ ...p, id: i })));
+    setCards(pieces);
+  }, []);
+  // Check if both the cards have same type. If they do, mark them inactive
+  const evaluate = () => {
+    const [first, second] = openCards;
+    if (cards[first].attributes.url === cards[second].attributes.url) {
+      setClearedCards((prev) => ({ ...prev, [cards[first].id]: true }));
+      setOpenCards([]);
+      return;
+    }
+    // Flip cards after a 500ms duration
+    timeout.current = setTimeout(() => {
+      setOpenCards([]);
+    }, 500);
+  };
+
+  const handleCardClick = (index) => {
+    // Have a maximum of 2 items in array at once.
+    if (openCards.length === 1) {
+      setOpenCards((prev) => [...prev, index]);
+      // increase the moves once we opened a pair
+      setMoves((moves) => moves + 1);
+    } else {
+      // If two cards are already open, we cancel timeout set for flipping cards back
+      clearTimeout(timeout.current);
+      setOpenCards([index]);
+    }
+  };
+
+  useEffect(() => {
+    if (openCards.length === 2) {
+      setTimeout(evaluate, 500);
+    }
+  }, [openCards]);
+
+  const checkIsFlipped = (index) => {
+    return openCards.includes(index);
+  };
+
+  const checkIsInactive = (card) => {
+    return Boolean(clearedCards[card.id]);
+  };
 
   return (
     <Container width="80vw" variant="tertiary">
-      <div className="grid grid-cols-4">
-        {pieces.map(({ attributes: p }, i) => (
-          <Piece key={i} src={p.url} alt={p.alt} number={String(i + 1)} guess={guess} />
+      <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
+        {cards.map(({ attributes: p, id }) => (
+          <Piece
+            onClick={() => handleCardClick(id)}
+            key={id}
+            src={p.url}
+            alt={p.alt}
+            height="150px"
+            width="100%"
+            number={String(id + 1)}
+            guess={false}
+            flip={checkIsFlipped(id)}
+          />
         ))}
       </div>
     </Container>
