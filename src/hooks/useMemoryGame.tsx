@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 
 interface IPiece {
+  id: number;
   attributes: {
     name: string;
     url: string;
@@ -30,23 +31,11 @@ interface IUseMemoryGame {
 
 export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
   const [openCards, setOpenCards] = useState<number[]>([]);
-  const [clearedCards, setClearedCards] = useState<Record<string, boolean>>({});
+  const [guesses, setGuesses] = useState<Record<string, boolean>>({});
   const [moves, setMoves] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
   const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>([]);
-
-  const evaluate = () => {
-    const [first, second] = openCards;
-    if (cards[first].attributes.name === cards[second].attributes.name) {
-      setClearedCards((prev) => ({ ...prev, [cards[first].attributes.name]: true }));
-      setOpenCards([]);
-      return;
-    }
-    timeout.current = setTimeout(() => {
-      setOpenCards([]);
-    }, 500);
-  };
 
   const handleCardClick = (index: number) => {
     if (openCards.length === 1) {
@@ -63,8 +52,14 @@ export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
   };
 
   const checkGuess = (card: IPiece['attributes']) => {
-    return !!clearedCards[card.name];
+    return !!guesses[card.name];
   };
+
+  useEffect(() => {
+    if (Object.keys(guesses).length === pieces.length) {
+      setShowModal(true);
+    }
+  }, [guesses, pieces]);
 
   useEffect(() => {
     let piecesCopy = [...pieces, ...pieces];
@@ -73,10 +68,22 @@ export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
   }, [pieces]);
 
   useEffect(() => {
+    const evaluate = () => {
+      const [first, second] = openCards;
+      if (cards[first].attributes.name === cards[second].attributes.name) {
+        setGuesses((prev) => ({ ...prev, [cards[first].attributes.name]: true }));
+        setOpenCards([]);
+        return;
+      }
+      timeout.current = setTimeout(() => {
+        setOpenCards([]);
+      }, 500);
+    };
+
     if (openCards.length === 2) {
       setTimeout(evaluate, 500);
     }
-  }, [openCards]);
+  }, [openCards, cards]);
 
   return { cards, handleCardClick, checkIsFlipped, checkGuess, moves, showModal, setShowModal };
 };

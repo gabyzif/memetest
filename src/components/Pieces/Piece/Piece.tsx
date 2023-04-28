@@ -44,7 +44,7 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number, onClick, flip }) => {
 
 const PieceGuess: React.FC<IPiece> = ({ src, alt, width, height }) => {
   return (
-    <div style={{ position: 'relative', width, height }} className="m-2">
+    <div style={{ position: 'relative' }} className="m-2 xl:w-64 xl:h-64 md:w-44 md:h-44  w-44 h-44">
       <Image
         src={src}
         alt={alt}

@@ -11,7 +11,8 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories }) => {
         <Button key={`${c.attributes.name}-${i}`} href={c.attributes.name} variant="primary">
           <div className="flex justify-between uppercase w-full">
             <p>{c.attributes.name.replace('_', ' ')}</p>
-            <p>{c.attributes.score}</p>
+            <p>Score: {c.attributes.score}</p>
+            <p>Difficulty:</p>
           </div>
         </Button>
       ))}
