@@ -8,11 +8,30 @@ import { useRouter } from 'next/router';
 
 interface IPieceContainer {
   piece: IPiece[];
+  category: string;
+  boardState?: any;
+  sessionMoves?: number;
+  hasSessionData?: boolean;
 }
 
-const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
-  const { cards, handleCardClick, checkIsFlipped, checkGuess, guesses, moves, showModal, setShowModal } =
-    useMemoryGame(piece);
+const PieceContainer: React.FC<IPieceContainer> = ({
+  piece,
+  category,
+  boardState,
+  sessionMoves,
+  hasSessionData
+}) => {
+  const {
+    cards,
+    handleCardClick,
+    checkIsFlipped,
+    checkGuess,
+    guesses,
+    moves,
+    setMoves,
+    showModal,
+    setShowModal
+  } = useMemoryGame(piece, sessionMoves, hasSessionData);
 
   const { getItem, setItem } = useStorage();
   const router = useRouter();
@@ -28,8 +47,15 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
 
   useEffect(() => {
     setItem('guesses', JSON.stringify(guesses), 'session');
-    console.log(guesses);
   }, [guesses]);
+
+  useEffect(() => {
+    if (hasSessionData) {
+      const moves = getItem('moves', 'session');
+      console.log(moves);
+      // setMoves(getItem('moves', 'session'));
+    }
+  }, [hasSessionData]);
 
   // TODO: Moves, score, and guess should also be a prop
   // TODO: Calculate score
@@ -38,7 +64,11 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
 
   return (
     <Container height="auto" variant="tertiary">
-      <h1 className="text-5xl font-bold uppercase ">{category}</h1>
+      <div className="mb-10">
+        <h1 className="text-5xl font-bold uppercase ">{category}</h1>
+        <p className="text-3xl ">Moves: {moves}</p>
+      </div>
+
       <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
         {cards.map(({ attributes: p, id }, i) => (
           <Piece

@@ -28,9 +28,14 @@ interface IUseMemoryGame {
   showModal: boolean;
   setShowModal: (show: boolean) => void;
   guesses: Record<string, boolean>;
+  setMoves: (moves: number) => void;
 }
 
-export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
+export const useMemoryGame = (
+  pieces: IPiece[],
+  sessionMoves: number,
+  hasSessionData: boolean
+): IUseMemoryGame => {
   const [openCards, setOpenCards] = useState<number[]>([]);
   const [guesses, setGuesses] = useState<Record<string, boolean>>({});
   const [moves, setMoves] = useState<number>(0);
@@ -73,7 +78,6 @@ export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
       const [first, second] = openCards;
       if (cards[first].attributes.name === cards[second].attributes.name) {
         setGuesses((prev) => ({ ...prev, [cards[first].attributes.name]: true }));
-        console.log(guesses, ' guess');
         setOpenCards([]);
         return;
       }
@@ -87,5 +91,15 @@ export const useMemoryGame = (pieces: IPiece[]): IUseMemoryGame => {
     }
   }, [openCards, cards]);
 
-  return { cards, handleCardClick, checkIsFlipped, checkGuess, moves, showModal, setShowModal, guesses };
+  return {
+    cards,
+    handleCardClick,
+    checkIsFlipped,
+    checkGuess,
+    moves,
+    showModal,
+    setMoves,
+    setShowModal,
+    guesses
+  };
 };

@@ -1,9 +1,21 @@
 import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
+import { useEffect, useState } from 'react';
 import useStorage from '@/hooks/useStorage';
+import Router from 'next/router';
 
 export default function Home({ categories }) {
+  const { getItem } = useStorage();
+
+  const continueGame = () => {
+    const category = getItem('game', 'session');
+    Router.push({
+      pathname: `/${category}`,
+      query: { hasSessionData: true }
+    });
+  };
+
   return (
     <main>
       <div>
@@ -17,7 +29,7 @@ export default function Home({ categories }) {
             {categories ? <ListButtons categories={categories} /> : <p>Loading...</p>}
             <div className="flex justify-center my-3 gap-3">
               <Button text="START" href="#" variant="secondary" />
-              <Button text="CONTINUE" href="#" />
+              <button onClick={() => continueGame()}> Continue </button>
             </div>
           </Container>
         </Container>
@@ -39,4 +51,7 @@ export async function getStaticProps() {
       categories: categories.data
     } // will be passed to the page component as props
   };
+}
+function getItem(arg0: string, arg1: string) {
+  throw new Error('Function not implemented.');
 }

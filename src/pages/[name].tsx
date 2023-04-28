@@ -3,7 +3,7 @@ import PieceContainer from '@/components/Pieces/PieceContainer/PieceContainer';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import useStorage from '@/hooks/useStorage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Page = ({ game }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -16,11 +16,6 @@ const Page = ({ game }) => {
     { initialData: game }
   );
 
-  useEffect(() => {
-    const pieceLS = getItem('cards', 'session');
-    console.log(pieceLS, 'pieceLS');
-  }, []);
-
   // send piece, moves, score, and guess as props from ST
 
   return (
@@ -29,6 +24,8 @@ const Page = ({ game }) => {
         <PieceContainer
           category={router.query.name.replace('_', ' ')}
           piece={data.data[0].attributes.images.data}
+          hasSessionData={router.query.hasSessionData}
+          sessionMoves={router.query.sessionMoves || ''}
         />
       ) : (
         <p>Loading...</p>
