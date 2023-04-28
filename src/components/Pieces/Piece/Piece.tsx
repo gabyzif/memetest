@@ -15,7 +15,10 @@ export interface IPiece {
 
 const PieceFlip: React.FC<IPiece> = ({ src, alt, number, width, height, onClick, flip }) => {
   return (
-    <button className={`${s.container} m-2`} style={{ width, height }} onClick={() => onClick()}>
+    <button
+      className={`${s.container} m-2 xl:w-56 xl:h-56 md:w-44 md:h-44  w-64 h-64`}
+      onClick={() => onClick()}
+    >
       <div className={`${s.card} ${flip ? s.flipped : ''}`} style={{ width: '100%', height: '100%' }}>
         <div className={`${s.face} ${s.back}`}>
           <Image
