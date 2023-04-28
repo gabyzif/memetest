@@ -14,7 +14,14 @@ const Page = ({ game }) => {
   );
   return (
     <Container width="auto">
-      {data ? <PieceContainer piece={data.data[0].attributes.images.data} /> : <p>Loading...</p>}
+      {data ? (
+        <PieceContainer
+          category={router.query.name.replace('_', ' ')}
+          piece={data.data[0].attributes.images.data}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
     </Container>
   );
 };

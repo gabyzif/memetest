@@ -17,7 +17,7 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number, width, height, onClick,
   return (
     <button
       className={`${s.container} m-2`}
-      style={{ position: 'relative', width, height }}
+      style={{ width, height, backgroundColor: 'grey' }}
       onClick={() => onClick()}
     >
       <div className={`${s.card} ${flip ? s.flipped : ''}`} style={{ width: '100%', height: '100%' }}>
@@ -27,15 +27,15 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number, width, height, onClick,
             alt={alt}
             fill
             className="rounded-3xl"
-            sizes="100vw"
             style={{
-              objectFit: 'cover',
-              width: '100%',
-              maxHeight: ' 100%'
+              objectFit: 'cover'
             }}
           />
         </div>
-        <div className={`${s.face} ${s.front} flex flex-col justify-center  rounded-3xl`}>
+        <div
+          className={`${s.face} ${s.front} flex flex-col justify-center  rounded-3xl`}
+          style={{ width: '100%', height: '100%' }}
+        >
           <p className="text-6xl font-bold font-play text-gray-700 text-center ">{number}</p>
         </div>
       </div>

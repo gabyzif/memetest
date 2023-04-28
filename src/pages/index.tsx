@@ -3,7 +3,6 @@ import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 
 export default function Home({ categories }) {
-  console.log(categories);
   return (
     <main>
       <div>

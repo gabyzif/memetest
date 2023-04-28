@@ -19,7 +19,7 @@ function shuffleArray(array) {
   return array;
 }
 
-const PieceContainer: React.FC<IPieceContainer> = ({ piece }) => {
+const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
   const [openCards, setOpenCards] = useState([]);
   const [clearedCards, setClearedCards] = useState({});
   const [moves, setMoves] = useState(0);
@@ -32,11 +32,13 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece }) => {
     pieces = shuffleArray(pieces.map((p, i) => ({ ...p, id: i })));
     setCards(pieces);
   }, []);
+
   // Check if both the cards have same type. If they do, mark them inactive
   const evaluate = () => {
+    debugger;
     const [first, second] = openCards;
-    if (cards[first].attributes.url === cards[second].attributes.url) {
-      setClearedCards((prev) => ({ ...prev, [cards[first].id]: true }));
+    if (cards[first].attributes.name === cards[second].attributes.name) {
+      setClearedCards((prev) => ({ ...prev, [cards[first].attributes.name]: true }));
       setOpenCards([]);
       return;
     }
@@ -69,24 +71,25 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece }) => {
     return openCards.includes(index);
   };
 
-  const checkIsInactive = (card) => {
-    return Boolean(clearedCards[card.id]);
+  const checkGuess = (card) => {
+    return !!clearedCards[card.name];
   };
 
   return (
     <Container width="80vw" variant="tertiary">
+      <h1 className="text-5xl font-bold uppercase ">{category}</h1>
       <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
-        {cards.map(({ attributes: p, id }) => (
+        {cards.map(({ attributes: p, id }, i) => (
           <Piece
-            onClick={() => handleCardClick(id)}
-            key={id}
+            onClick={() => handleCardClick(i)}
+            key={i}
             src={p.url}
             alt={p.alt}
             height="150px"
-            width="100%"
+            width="150px"
             number={String(id + 1)}
-            guess={false}
-            flip={checkIsFlipped(id)}
+            guess={checkGuess(p)}
+            flip={checkIsFlipped(i)}
           />
         ))}
       </div>
