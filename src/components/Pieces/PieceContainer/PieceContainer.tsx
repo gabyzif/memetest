@@ -9,7 +9,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
   const { cards, handleCardClick, checkIsFlipped, checkGuess, moves } = useMemoryGame(piece);
 
   return (
-    <Container width="90vw" variant="tertiary">
+    <Container variant="tertiary">
       <h1 className="text-5xl font-bold uppercase ">{category}</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 ">
         {cards.map(({ attributes: p, id }, i) => (
