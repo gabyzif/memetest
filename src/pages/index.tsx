@@ -1,6 +1,7 @@
 import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
+import useStorage from '@/hooks/useStorage';
 
 export default function Home({ categories }) {
   return (

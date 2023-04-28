@@ -2,16 +2,27 @@ import Container from '@/components/Container/Container';
 import PieceContainer from '@/components/Pieces/PieceContainer/PieceContainer';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+import useStorage from '@/hooks/useStorage';
+import { useEffect } from 'react';
 
 const Page = ({ game }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const router = useRouter();
-  console.log(process.env.STRAPI_URL);
+  const { getItem } = useStorage();
+
   const { data, error, isLoading } = useSWR(
     `${process.env.STRAPI_URL}api/games?populate=*&filters[category][name][$eq]=${router.query.name}`,
     fetcher,
     { initialData: game }
   );
+
+  useEffect(() => {
+    const pieceLS = getItem('cards', 'session');
+    console.log(pieceLS, 'pieceLS');
+  }, []);
+
+  // send piece, moves, score, and guess as props from ST
+
   return (
     <Container width="auto">
       {data ? (
