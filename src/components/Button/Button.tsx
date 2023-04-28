@@ -4,9 +4,10 @@ interface ButtonProps {
   children?: React.ReactNode;
   href: string;
   variant?: 'primary' | 'secondary' | 'tertiary';
+  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, href, variant = 'primary', children }) => {
+const Button: React.FC<ButtonProps> = ({ text, href, variant = 'primary', children, className }) => {
   const color = {
     primary: 'bg-primary-light hover:bg-primary-dark',
     secondary: 'bg-secondary-light hover:bg-secondary-dark',
@@ -16,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({ text, href, variant = 'primary', childr
   return (
     <Link
       href={href}
-      className={`${color[variant]} text-gray-700 block  w-fit py-4 px-4 rounded-3xl shadow-lg`}
+      className={`${color[variant]} ${className} text-gray-700 block  w-fit py-4 px-4 rounded-3xl shadow-lg`}
     >
       {text ? <p className="font-bold ">{text}</p> : children}
     </Link>

@@ -13,7 +13,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category }) => {
   return (
     <Container height="auto" variant="tertiary">
       <h1 className="text-5xl font-bold uppercase ">{category}</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
         {cards.map(({ attributes: p, id }, i) => (
           <Piece
             onClick={() => handleCardClick(i)}
