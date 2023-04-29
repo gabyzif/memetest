@@ -1,9 +1,9 @@
 import Container from '../../Container/Container';
 import Piece, { IPiece } from '../Piece/Piece';
 import { useMemoryGame } from '../../../hooks/useMemoryGame';
-import Modal from '@/components/Modal/Modal';
+import Modal from '../../../components/Modal/Modal';
 import { useEffect } from 'react';
-import useStorage from '@/hooks/useStorage';
+import useStorage from '../../../hooks/useStorage';
 import { useRouter } from 'next/router';
 
 interface IPieceContainer {

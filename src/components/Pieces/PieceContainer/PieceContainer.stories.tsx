@@ -17,28 +17,16 @@ export const Primary: Story = {
   args: {
     piece: [
       {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
+        attributes: {
+          url: 'https://picsum.photos/200/300',
+          alt: 'random image'
+        }
       },
       {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
-      },
-      {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
-      },
-      {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
-      },
-      {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
-      },
-      {
-        src: 'https://picsum.photos/200/300',
-        alt: 'random image'
+        attributes: {
+          url: 'https://picsum.photos/100/300',
+          alt: 'random image'
+        }
       }
     ]
   }

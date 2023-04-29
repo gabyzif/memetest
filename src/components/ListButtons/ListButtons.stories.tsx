@@ -15,10 +15,7 @@ type Story = StoryObj<typeof ListButtons>;
 
 export const Primary: Story = {
   args: {
-    categories: [
-      { name: 'test', score: '89' },
-      { name: 'test2', score: '89' }
-    ]
+    categories: [{ attributes: { name: 'test', score: '89' } }]
   }
 };
 
