@@ -42,25 +42,22 @@ const PieceContainer: React.FC<IPieceContainer> = ({
   }, [cards, router.query.name]);
 
   useEffect(() => {
+    if (hasSessionData) {
+      const sessionMoves = getItem('moves', 'session');
+      if (sessionMoves) {
+        const movesArr = JSON.parse(sessionMoves);
+        setMoves(movesArr);
+      }
+    }
+  }, [hasSessionData]);
+
+  useEffect(() => {
     setItem('moves', JSON.stringify(moves), 'session');
   }, [moves]);
 
   useEffect(() => {
     setItem('guesses', JSON.stringify(guesses), 'session');
   }, [guesses]);
-
-  useEffect(() => {
-    if (hasSessionData) {
-      const moves = getItem('moves', 'session');
-      console.log(moves);
-      // setMoves(getItem('moves', 'session'));
-    }
-  }, [hasSessionData]);
-
-  // TODO: Moves, score, and guess should also be a prop
-  // TODO: Calculate score
-  // TESTS
-  // FIX SB
 
   return (
     <Container height="auto" variant="tertiary">
@@ -88,6 +85,3 @@ const PieceContainer: React.FC<IPieceContainer> = ({
 };
 
 export default PieceContainer;
-function setItem(arg0: string, name: any, arg2: string) {
-  throw new Error('Function not implemented.');
-}
