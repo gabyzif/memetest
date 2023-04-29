@@ -16,7 +16,6 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories }) => {
         >
           <div className="flex justify-between uppercase w-full">
             <p>{c.attributes.name.replace('_', ' ')}</p>
-            <p>Score: {c.attributes.score}</p>
           </div>
         </Button>
       ))}
