@@ -6,6 +6,7 @@ interface IModal {
   onClose: () => void;
 }
 const Modal: React.FC<IModal> = ({ score, onClose }) => {
+  console.log(score);
   return (
     <div className=" w-screen h-screen absolute bg-tertiary-dark m-0 top-0 left-0 flex bg-opacity-90	">
       <Container variant="primary" className=" w-6/12 h-96">

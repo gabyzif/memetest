@@ -30,8 +30,9 @@ const PieceContainer: React.FC<IPieceContainer> = ({
     moves,
     setMoves,
     showModal,
-    setShowModal
-  } = useMemoryGame(piece, sessionMoves, hasSessionData);
+    setShowModal,
+    score
+  } = useMemoryGame(piece, hasSessionData);
 
   const { getItem, setItem } = useStorage();
   const router = useRouter();
@@ -78,7 +79,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({
             flip={checkIsFlipped(i)}
           />
         ))}
-        {showModal && <Modal moves={moves} onClose={() => setShowModal(false)} />}
+        {showModal && <Modal score={score} onClose={() => setShowModal(false)} />}
       </div>
     </Container>
   );

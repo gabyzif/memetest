@@ -29,6 +29,7 @@ interface IUseMemoryGame {
   setShowModal: (show: boolean) => void;
   guesses: Record<string, boolean>;
   setMoves: (moves: number) => void;
+  score: number;
 }
 
 export const useMemoryGame = (
@@ -40,6 +41,7 @@ export const useMemoryGame = (
   const [guesses, setGuesses] = useState<Record<string, boolean>>({});
   const [moves, setMoves] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
   const timeout = useRef<NodeJS.Timeout | null>(null);
   const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>([]);
 
@@ -64,6 +66,8 @@ export const useMemoryGame = (
   useEffect(() => {
     if (Object.keys(guesses).length === pieces.length) {
       setShowModal(true);
+      console.log('score', pieces.length * moves);
+      setScore(pieces.length * moves);
     }
   }, [guesses, pieces]);
 
@@ -100,6 +104,7 @@ export const useMemoryGame = (
     showModal,
     setMoves,
     setShowModal,
-    guesses
+    guesses,
+    score
   };
 };
