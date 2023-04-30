@@ -68,7 +68,6 @@ export const useMemoryGame = (
   useEffect(() => {
     if (Object.keys(guesses).length === pieces.length) {
       setShowModal(true);
-      console.log('score', pieces.length * moves);
       setScore(pieces.length * moves);
     }
   }, [guesses, pieces]);
