@@ -67,7 +67,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   return (
     <Container height="auto" variant="tertiary">
       <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 justify-center ">
-        <div className="mb-10">
+        <div className="mb-10 col-span-4">
           <h1 className="text-5xl font-bold uppercase ">{category}</h1>
           <p className="text-3xl ">Moves: {moves}</p>
           <p className="text-3xl ">Max Score: {getItem('maxScore', 'session')}</p>
@@ -83,15 +83,16 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
             flip={checkIsFlipped(i)}
           />
         ))}
-        <div className="h-fit w-fit flex gap-3 bg-tertiary-dark p-5 rounded-full">
-          <p className="text-2xl self-center">Actions</p>
 
-          <Button href="/" variant="secondary">
-            Back
-          </Button>
-          <button onClick={() => restart()}> Restart </button>
-        </div>
         {showModal && <Modal score={score} onClose={() => setShowModal(false)} />}
+      </div>
+      <div className="h-fit w-fit justify-end  ml-auto flex gap-3 bg-tertiary-dark p-3 m-5 rounded-full">
+        <p className="text-2xl self-center">Actions</p>
+
+        <Button href="/" variant="secondary">
+          Back
+        </Button>
+        <button onClick={() => restart()}> Restart </button>
       </div>
     </Container>
   );
