@@ -2,7 +2,7 @@ import Container from '../../Container/Container';
 import Piece, { IPiece } from '../Piece/Piece';
 import { useMemoryGame } from '../../../hooks/useMemoryGame';
 import Modal from '../../../components/Modal/Modal';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useStorage from '../../../hooks/useStorage';
 import { useRouter } from 'next/router';
 
@@ -14,13 +14,19 @@ interface IPieceContainer {
   hasSessionData?: boolean;
 }
 
-const PieceContainer: React.FC<IPieceContainer> = ({
-  piece,
-  category,
-  boardState,
-  sessionMoves,
-  hasSessionData
-}) => {
+const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState, hasSessionData }) => {
+  const { getItem, setItem } = useStorage();
+
+  let sessionMoves;
+  let sessionCards;
+  let sessionGuesses;
+
+  if (hasSessionData) {
+    sessionMoves = Number(getItem('moves', 'session')) || 0;
+    sessionCards = JSON.parse(getItem('cards', 'session')) || [];
+    sessionGuesses = JSON.parse(getItem('guesses', 'session')) || [];
+  }
+
   const {
     cards,
     handleCardClick,
@@ -32,25 +38,14 @@ const PieceContainer: React.FC<IPieceContainer> = ({
     showModal,
     setShowModal,
     score
-  } = useMemoryGame(piece, hasSessionData);
+  } = useMemoryGame(piece, hasSessionData, sessionMoves, sessionCards, sessionGuesses);
 
-  const { getItem, setItem } = useStorage();
   const router = useRouter();
 
   useEffect(() => {
     setItem('cards', JSON.stringify(cards), 'session');
     setItem('game', router.query.name, 'session');
   }, [cards, router.query.name]);
-
-  useEffect(() => {
-    if (hasSessionData) {
-      const sessionMoves = getItem('moves', 'session');
-      if (sessionMoves) {
-        const movesArr = JSON.parse(sessionMoves);
-        setMoves(movesArr);
-      }
-    }
-  }, [hasSessionData]);
 
   useEffect(() => {
     setItem('moves', JSON.stringify(moves), 'session');

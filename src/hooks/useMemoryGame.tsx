@@ -34,16 +34,18 @@ interface IUseMemoryGame {
 
 export const useMemoryGame = (
   pieces: IPiece[],
+  hasSessionData: boolean,
   sessionMoves: number,
-  hasSessionData: boolean
+  sessionCards: { id: number; attributes: IPiece['attributes'] }[],
+  sessionGuesses: {}
 ): IUseMemoryGame => {
   const [openCards, setOpenCards] = useState<number[]>([]);
-  const [guesses, setGuesses] = useState<Record<string, boolean>>({});
-  const [moves, setMoves] = useState<number>(0);
+  const [guesses, setGuesses] = useState<Record<string, boolean>>(sessionGuesses || {});
+  const [moves, setMoves] = useState<number>(sessionMoves || 0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const timeout = useRef<NodeJS.Timeout | null>(null);
-  const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>([]);
+  const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>(sessionCards || []);
 
   const handleCardClick = (index: number) => {
     if (openCards.length === 1) {
@@ -72,10 +74,13 @@ export const useMemoryGame = (
   }, [guesses, pieces]);
 
   useEffect(() => {
+    if (hasSessionData) {
+      return;
+    }
     let piecesCopy = [...pieces, ...pieces];
     piecesCopy = shuffleArray(piecesCopy.map((p, i) => ({ ...p, id: i })));
     setCards(piecesCopy);
-  }, [pieces]);
+  }, [pieces, hasSessionData]);
 
   useEffect(() => {
     const evaluate = () => {
