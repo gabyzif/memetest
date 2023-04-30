@@ -55,11 +55,19 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
     setItem('guesses', JSON.stringify(guesses), 'session');
   }, [guesses]);
 
+  useEffect(() => {
+    let maxScore = getItem('maxScore', 'session');
+    if (Number(maxScore) < score) {
+      setItem('maxScore', JSON.stringify(score), 'session');
+    }
+  }, [score]);
+
   return (
     <Container height="auto" variant="tertiary">
       <div className="mb-10">
         <h1 className="text-5xl font-bold uppercase ">{category}</h1>
         <p className="text-3xl ">Moves: {moves}</p>
+        <p className="text-3xl ">Max Score: {getItem('maxScore', 'session')}</p>
       </div>
 
       <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
