@@ -5,6 +5,7 @@ import Modal from '../../../components/Modal/Modal';
 import { useEffect, useState } from 'react';
 import useStorage from '../../../hooks/useStorage';
 import { useRouter } from 'next/router';
+import Button from '@/components/Button/Button';
 
 interface IPieceContainer {
   piece: IPiece[];
@@ -37,7 +38,8 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
     setMoves,
     showModal,
     setShowModal,
-    score
+    score,
+    restart
   } = useMemoryGame(piece, hasSessionData, sessionMoves, sessionCards, sessionGuesses);
 
   const router = useRouter();
@@ -64,13 +66,12 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
 
   return (
     <Container height="auto" variant="tertiary">
-      <div className="mb-10">
-        <h1 className="text-5xl font-bold uppercase ">{category}</h1>
-        <p className="text-3xl ">Moves: {moves}</p>
-        <p className="text-3xl ">Max Score: {getItem('maxScore', 'session')}</p>
-      </div>
-
-      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 justify-center ">
+        <div className="mb-10">
+          <h1 className="text-5xl font-bold uppercase ">{category}</h1>
+          <p className="text-3xl ">Moves: {moves}</p>
+          <p className="text-3xl ">Max Score: {getItem('maxScore', 'session')}</p>
+        </div>
         {cards.map(({ attributes: p, id }, i) => (
           <Piece
             onClick={() => handleCardClick(i)}
@@ -82,6 +83,14 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
             flip={checkIsFlipped(i)}
           />
         ))}
+        <div className="h-fit w-fit flex gap-3 bg-tertiary-dark p-5 rounded-full">
+          <p className="text-2xl self-center">Actions</p>
+
+          <Button href="/" variant="secondary">
+            Back
+          </Button>
+          <button onClick={() => restart()}> Restart </button>
+        </div>
         {showModal && <Modal score={score} onClose={() => setShowModal(false)} />}
       </div>
     </Container>

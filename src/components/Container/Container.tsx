@@ -17,7 +17,7 @@ const Container: React.FC<IContainer> = ({ children, width, variant, height, cla
     <div
       className={`${
         variant ? color[variant] : ''
-      } ${className} h-screen-3/4 w-12/12 m-auto  p-2 md:p-5 rounded-xl justify-center`}
+      } ${className} h-screen-3/4 w-12/12 m-auto py-2 md:p-5 rounded-xl justify-center`}
       style={{ width, height }}
     >
       {children}

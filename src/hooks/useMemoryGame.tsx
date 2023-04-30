@@ -30,6 +30,7 @@ interface IUseMemoryGame {
   guesses: Record<string, boolean>;
   setMoves: (moves: number) => void;
   score: number;
+  restart: () => void;
 }
 
 export const useMemoryGame = (
@@ -99,6 +100,15 @@ export const useMemoryGame = (
     }
   }, [openCards, cards]);
 
+  const restart = () => {
+    setOpenCards([]);
+    setGuesses({});
+    setMoves(0);
+    setShowModal(false);
+
+    return;
+  };
+
   return {
     cards,
     handleCardClick,
@@ -109,6 +119,7 @@ export const useMemoryGame = (
     setMoves,
     setShowModal,
     guesses,
-    score
+    score,
+    restart
   };
 };

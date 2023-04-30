@@ -16,7 +16,7 @@ export interface IPiece {
 const PieceFlip: React.FC<IPiece> = ({ src, alt, number, onClick, flip }) => {
   return (
     <button
-      className={`${s.container} m-2 xl:w-64 xl:h-64 md:w-44 md:h-44 w-24 h-24`}
+      className={`${s.container} md:m-2 xl:w-64 xl:h-64 md:w-44 md:h-44 w-20  h-20`}
       onClick={() => onClick()}
     >
       <div className={`${s.card} ${flip ? s.flipped : ''}`} style={{ width: '100%', height: '100%' }}>
@@ -44,7 +44,7 @@ const PieceFlip: React.FC<IPiece> = ({ src, alt, number, onClick, flip }) => {
 
 const PieceGuess: React.FC<IPiece> = ({ src, alt, width, height }) => {
   return (
-    <div style={{ position: 'relative' }} className="m-2 xl:w-64 xl:h-64 md:w-44 md:h-44 w-24 h-24 ">
+    <div style={{ position: 'relative' }} className="md:m-2 xl:w-64 xl:h-64 md:w-44 md:h-44 w-20 h-20 ">
       <Image
         src={src}
         alt={alt}
