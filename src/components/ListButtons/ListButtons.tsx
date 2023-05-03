@@ -1,21 +1,16 @@
 import Button from '../Button/Button';
 
 interface ListButtonsProps {
-  categories: { attributes: { name: string; score: string } }[];
+  categories: [];
 }
 
 const ListButtons: React.FC<ListButtonsProps> = ({ categories }) => {
   return (
     <div className="list-buttons flex flex-wrap flex-col gap-3 w-full text-center">
       {categories.map((c, i) => (
-        <Button
-          key={`${c.attributes.name}-${i}`}
-          href={c.attributes.name}
-          variant="primary"
-          className="w-full"
-        >
+        <Button key={`${c}-${i}`} href={c} variant="primary" className="w-full">
           <div className="flex justify-between uppercase w-full">
-            <p>{c.attributes.name.replace('_', ' ')}</p>
+            <p>{c.replace('_', ' ')}</p>
           </div>
         </Button>
       ))}

@@ -4,11 +4,14 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import useStorage from '@/hooks/useStorage';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCategory, setCategories, setMaxScore } from '@/store/slice';
 
 const Page = ({ game }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const router = useRouter();
   const { getItem } = useStorage();
+  const dispatch = useDispatch();
 
   const { data, error, isLoading } = useSWR(
     `${process.env.STRAPI_URL}api/games?populate=*&filters[category][name][$eq]=${router.query.name}`,
@@ -18,6 +21,14 @@ const Page = ({ game }) => {
 
   // send piece, moves, score, and guess as props from ST
 
+  useEffect(() => {
+    dispatch(selectCategory(router.query.name));
+    dispatch(setMaxScore({ category: router.query.name, maxScore: '12' }));
+  }, []);
+
+  const selectedCategory = useSelector((state) => state);
+
+  console.log(selectedCategory, router.query.name);
   return (
     <Container width="auto">
       {data ? (

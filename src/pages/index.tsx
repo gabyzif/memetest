@@ -1,13 +1,25 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
-import Button from '@/components/Button/Button';
-import { useEffect, useState } from 'react';
 import useStorage from '@/hooks/useStorage';
 import Router from 'next/router';
+import { selectCategory, setCategories } from '@/store/slice';
 
 export default function Home({ categories }) {
+  console.log(categories);
   const { getItem } = useStorage();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (categories) {
+      const categoriesWithMaxScore = categories.reduce((acc, curr) => {
+        acc[curr] = { maxScore: null };
+        return acc;
+      }, {});
 
+      dispatch(setCategories(categoriesWithMaxScore));
+    }
+  }, [categories, dispatch]);
   const continueGame = () => {
     const category = getItem('game', 'session');
     Router.push({
@@ -42,17 +54,18 @@ export default function Home({ categories }) {
 export async function getStaticProps() {
   let categories;
   try {
-    categories = await fetch(`${process.env.STRAPI_URL}api/categories`);
-    categories = await categories.json();
+    const response = await fetch(`${process.env.STRAPI_URL}api/categories`);
+    const data = await response.json();
+    categories = data?.data || null;
+    console.log(categories);
+    categories = categories?.map((category) => category.attributes.name);
   } catch (e) {
-    return e;
+    categories = null;
   }
+
   return {
     props: {
-      categories: categories.data
-    } // will be passed to the page component as props
+      categories
+    }
   };
-}
-function getItem(arg0: string, arg1: string) {
-  throw new Error('Function not implemented.');
 }
