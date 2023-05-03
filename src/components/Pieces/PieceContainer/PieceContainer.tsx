@@ -3,9 +3,10 @@ import Piece, { IPiece } from '../Piece/Piece';
 import { useMemoryGame } from '../../../hooks/useMemoryGame';
 import Modal from '../../../components/Modal/Modal';
 import { useEffect, useState } from 'react';
-import useStorage from '../../../hooks/useStorage';
 import { useRouter } from 'next/router';
 import Button from '@/components/Button/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMovesStore, setGuessesStore, setMaxScoreStore, setCardsStore } from '@/store/slice';
 
 interface IPieceContainer {
   piece: IPiece[];
@@ -16,17 +17,9 @@ interface IPieceContainer {
 }
 
 const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState, hasSessionData }) => {
-  const { getItem, setItem } = useStorage();
-
-  let sessionMoves;
-  let sessionCards;
-  let sessionGuesses;
-
-  if (hasSessionData) {
-    sessionMoves = Number(getItem('moves', 'session')) || 0;
-    sessionCards = JSON.parse(getItem('cards', 'session')) || [];
-    sessionGuesses = JSON.parse(getItem('guesses', 'session')) || [];
-  }
+  const cardsStore = useSelector((state) => state.categories[category].cards);
+  const guessesStore = useSelector((state) => state.categories[category].guesses);
+  const movesStore = useSelector((state) => state.categories[category].moves);
 
   const {
     cards,
@@ -40,29 +33,31 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
     setShowModal,
     score,
     restart
-  } = useMemoryGame(piece, hasSessionData, sessionMoves, sessionCards, sessionGuesses);
+  } = useMemoryGame(piece, hasSessionData);
 
   const router = useRouter();
+  const maxScore = useSelector((state) => state.categories[category].maxScore);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setItem('cards', JSON.stringify(cards), 'session');
-    setItem('game', router.query.name, 'session');
+    dispatch(setCardsStore({ category, cards }));
   }, [cards, router.query.name]);
 
   useEffect(() => {
-    setItem('moves', JSON.stringify(moves), 'session');
+    dispatch(setMovesStore({ category, moves }));
   }, [moves]);
 
   useEffect(() => {
-    setItem('guesses', JSON.stringify(guesses), 'session');
+    dispatch(setGuessesStore({ category, guesses }));
   }, [guesses]);
 
   useEffect(() => {
-    let maxScore = getItem('maxScore', 'session');
     if (Number(maxScore) < score) {
-      setItem('maxScore', JSON.stringify(score), 'session');
+      dispatch(setMaxScoreStore({ category, maxScore: String(score) }));
     }
   }, [score]);
+
+  console.log({ cardsStore, guessesStore, movesStore }, 'store');
 
   return (
     <Container height="auto" variant="tertiary">
@@ -70,7 +65,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
         <div className="mb-10 col-span-4">
           <h1 className="text-5xl font-bold uppercase ">{category}</h1>
           <p className="text-3xl ">Moves: {moves}</p>
-          <p className="text-3xl ">Max Score: {getItem('maxScore', 'session')}</p>
+          <p className="text-3xl ">Max Score: </p>
         </div>
         {cards.map(({ attributes: p, id }, i) => (
           <Piece

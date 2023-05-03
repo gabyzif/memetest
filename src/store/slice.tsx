@@ -12,13 +12,21 @@ const gameSlice = createSlice({
     selectCategory: (state, action) => {
       state.selectedCategory = action.payload;
     },
-    setMaxScore: (state, action) => {
+    setMaxScoreStore: (state, action) => {
       const { category, maxScore } = action.payload;
       state.categories[category].maxScore = maxScore;
     },
-    addCategory: (state, action) => {
-      const { category, maxScore } = action.payload;
-      state.categories[category] = { maxScore };
+    setGuessesStore: (state, action) => {
+      const { category, guesses } = action.payload;
+      state.categories[category].guesses = guesses;
+    },
+    setMovesStore: (state, action) => {
+      const { category, moves } = action.payload;
+      state.categories[category].moves = moves;
+    },
+    setCardsStore: (state, action) => {
+      const { category, cards } = action.payload;
+      state.categories[category].cards = cards;
     },
     setCategories: (state, action) => {
       state.categories = action.payload;
@@ -26,5 +34,12 @@ const gameSlice = createSlice({
   }
 });
 
-export const { selectCategory, setMaxScore, addCategory, setCategories } = gameSlice.actions;
+export const {
+  selectCategory,
+  setMaxScoreStore,
+  setCategories,
+  setGuessesStore,
+  setMovesStore,
+  setCardsStore
+} = gameSlice.actions;
 export default gameSlice.reducer;

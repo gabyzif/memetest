@@ -2,15 +2,13 @@ import Container from '@/components/Container/Container';
 import PieceContainer from '@/components/Pieces/PieceContainer/PieceContainer';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import useStorage from '@/hooks/useStorage';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { selectCategory, setCategories, setMaxScore } from '@/store/slice';
 
 const Page = ({ game }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const router = useRouter();
-  const { getItem } = useStorage();
   const dispatch = useDispatch();
 
   const { data, error, isLoading } = useSWR(
@@ -19,16 +17,10 @@ const Page = ({ game }) => {
     { initialData: game }
   );
 
-  // send piece, moves, score, and guess as props from ST
-
   useEffect(() => {
     dispatch(selectCategory(router.query.name));
-    dispatch(setMaxScore({ category: router.query.name, maxScore: '12' }));
   }, []);
 
-  const selectedCategory = useSelector((state) => state);
-
-  console.log(selectedCategory, router.query.name);
   return (
     <Container width="auto">
       {data ? (

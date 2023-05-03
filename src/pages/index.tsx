@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
 import useStorage from '@/hooks/useStorage';
-import Router from 'next/router';
 import { selectCategory, setCategories } from '@/store/slice';
 
 export default function Home({ categories }) {
@@ -20,13 +19,6 @@ export default function Home({ categories }) {
       dispatch(setCategories(categoriesWithMaxScore));
     }
   }, [categories, dispatch]);
-  const continueGame = () => {
-    const category = getItem('game', 'session');
-    Router.push({
-      pathname: `/${category}`,
-      query: { hasSessionData: true }
-    });
-  };
 
   return (
     <main>
@@ -41,9 +33,6 @@ export default function Home({ categories }) {
             </div>
 
             {categories ? <ListButtons categories={categories} /> : <p>Loading...</p>}
-            <div className="flex justify-center my-3 gap-3">
-              <button onClick={() => continueGame()}> Continue </button>
-            </div>
           </Container>
         </Container>
       </div>
