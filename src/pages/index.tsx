@@ -3,11 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import ListButtons from '@/components/ListButtons/ListButtons';
 import Container from '@/components/Container/Container';
 import useStorage from '@/hooks/useStorage';
-import { selectCategory, setCategories } from '@/store/slice';
+import { selectCategory, setCategories, setCategoryList } from '@/store/slice';
 
 export default function Home({ categories }) {
-  console.log(categories);
-  const { getItem } = useStorage();
   const dispatch = useDispatch();
   useEffect(() => {
     if (categories) {
@@ -15,10 +13,12 @@ export default function Home({ categories }) {
         acc[curr] = { maxScore: null };
         return acc;
       }, {});
-
+      dispatch(setCategoryList(categories));
       dispatch(setCategories(categoriesWithMaxScore));
     }
   }, [categories, dispatch]);
+
+  const store = useSelector((state) => state);
 
   return (
     <main>
@@ -46,7 +46,6 @@ export async function getStaticProps() {
     const response = await fetch(`${process.env.STRAPI_URL}api/categories`);
     const data = await response.json();
     categories = data?.data || null;
-    console.log(categories);
     categories = categories?.map((category) => category.attributes.name);
   } catch (e) {
     categories = null;

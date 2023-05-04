@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectCategory, setCategories, setMaxScore } from '@/store/slice';
+import { setCards, setScore, setMoves } from '@/store/slice';
 
 const Page = ({ game }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -18,8 +18,13 @@ const Page = ({ game }) => {
   );
 
   useEffect(() => {
-    dispatch(selectCategory(router.query.name));
-  }, []);
+    if (data) {
+      const category = router.query.name.replace('_', ' ');
+      dispatch(setCards(category, data.data[0].attributes.images.data));
+      dispatch(setScore(category, 0));
+      dispatch(setMoves(category, router.query.sessionMoves || 0));
+    }
+  }, [data, router.query.sessionMoves]);
 
   return (
     <Container width="auto">

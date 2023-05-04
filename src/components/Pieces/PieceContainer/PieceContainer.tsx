@@ -57,8 +57,6 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
     }
   }, [score]);
 
-  console.log({ cardsStore, guessesStore, movesStore }, 'store');
-
   return (
     <Container height="auto" variant="tertiary">
       <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 justify-center ">

@@ -1,21 +1,29 @@
-import { configureStore } from '@reduxjs/toolkit';
-import gameReducer from './slice';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
+// store.ts
+import { configureStore, Store } from '@reduxjs/toolkit';
+import { createWrapper } from 'next-redux-wrapper';
+import { Persistor, persistReducer, persistStore } from 'redux-persist';
 import storageSession from 'reduxjs-toolkit-persist/lib/storage/session';
+import thunk from 'redux-thunk';
 
-const persistConfig = {
-  key: 'root',
-  storage: storageSession
+import gameReducer from './slice';
+
+const makeStore = (): Store & { persistor: Persistor } => {
+  const persistConfig = {
+    key: 'root',
+    storage: storageSession
+  };
+
+  const persistedReducer = persistReducer(persistConfig, gameReducer);
+
+  const store = configureStore({
+    reducer: persistedReducer,
+    devTools: true,
+    middleware: [thunk]
+  });
+
+  const persistor = persistStore(store);
+
+  return { ...store, persistor };
 };
 
-const persistedReducer = persistReducer(persistConfig, gameReducer);
-
-export const store = configureStore({
-  reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== 'production',
-  middleware: [thunk]
-});
-
-export const persistor = persistStore(store);
+export const wrapper = createWrapper(makeStore, { debug: true });
