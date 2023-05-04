@@ -21,7 +21,6 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   const guessesStore = useSelector((state) => state.categories[category].guesses);
   const movesStore = useSelector((state) => state.categories[category].moves);
 
-  console.log('cardsStore', cardsStore);
   const {
     cards,
     handleCardClick,

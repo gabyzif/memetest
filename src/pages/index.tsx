@@ -11,8 +11,6 @@ export default function Home({ categories }) {
 
   useEffect(() => {
     if (!storeCategories) {
-      console.log('hee');
-
       const categoriesWithMaxScore = categories.reduce((acc, curr) => {
         acc[curr] = { maxScore: null };
         return acc;
@@ -21,8 +19,6 @@ export default function Home({ categories }) {
       dispatch(setCategories(categoriesWithMaxScore));
     }
   }, [categories, dispatch, storeCategories]);
-
-  console.log(storeCategories, 'store in index');
 
   return (
     <main>
@@ -50,7 +46,6 @@ export async function getStaticProps() {
     const response = await fetch(`${process.env.STRAPI_URL}api/categories`);
     const data = await response.json();
     categories = data?.data || null;
-    console.log(categories);
     categories = categories?.map((category) => category.attributes.name);
   } catch (e) {
     categories = null;
