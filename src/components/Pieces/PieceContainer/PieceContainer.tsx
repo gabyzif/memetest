@@ -21,6 +21,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   const guessesStore = useSelector((state) => state.categories[category].guesses);
   const movesStore = useSelector((state) => state.categories[category].moves);
 
+  console.log('cardsStore', cardsStore);
   const {
     cards,
     handleCardClick,
@@ -33,7 +34,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
     setShowModal,
     score,
     restart
-  } = useMemoryGame(piece, hasSessionData);
+  } = useMemoryGame(piece, hasSessionData, cardsStore, guessesStore, movesStore);
 
   const router = useRouter();
   const maxScore = useSelector((state) => state.categories[category].maxScore);

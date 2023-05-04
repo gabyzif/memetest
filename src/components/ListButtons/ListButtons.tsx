@@ -16,8 +16,6 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories, score }) => {
     });
   };
 
-  //const maxScore = useSelector((state) => state.categories[category].maxScore);
-
   return (
     <div className="bg-secondary-light rounded-3xl p-10">
       <table className="w-full border-collapse">

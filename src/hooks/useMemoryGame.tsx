@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IPiece {
   id: number;
@@ -36,17 +36,17 @@ interface IUseMemoryGame {
 export const useMemoryGame = (
   pieces: IPiece[],
   hasSessionData: boolean,
-  sessionMoves: number,
-  sessionCards: { id: number; attributes: IPiece['attributes'] }[],
-  sessionGuesses: {}
+  cardsStore,
+  guessesStore,
+  movesStore
 ): IUseMemoryGame => {
   const [openCards, setOpenCards] = useState<number[]>([]);
-  const [guesses, setGuesses] = useState<Record<string, boolean>>(sessionGuesses || {});
-  const [moves, setMoves] = useState<number>(sessionMoves || 0);
+  const [guesses, setGuesses] = useState<Record<string, boolean>>(guessesStore || {});
+  const [moves, setMoves] = useState<number>(movesStore || 0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const timeout = useRef<NodeJS.Timeout | null>(null);
-  const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>(sessionCards || []);
+  const [cards, setCards] = useState<{ id: number; attributes: IPiece['attributes'] }[]>(cardsStore || []);
 
   const handleCardClick = (index: number) => {
     if (openCards.length === 1) {
