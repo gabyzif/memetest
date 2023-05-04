@@ -8,8 +8,8 @@ interface IModal {
 const Modal: React.FC<IModal> = ({ score, onClose }) => {
   return (
     <div className=" w-screen h-screen absolute bg-tertiary-dark m-0 top-0 left-0 flex bg-opacity-90	">
-      <Container variant="primary" className=" w-6/12 h-96">
-        <div className="grid  h-full ">
+      <Container variant="primary" className=" w-6/12  h-40">
+        <div className="grid h-full ">
           <button className="justify-self-end" onClick={onClose}>
             <h1 className="text-gray-700">X</h1>
           </button>
