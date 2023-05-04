@@ -20,7 +20,6 @@ export default function Home({ categories }) {
     }
   }, [categories, dispatch, storeCategories]);
 
-  console.log(storeCategories, categories);
   return (
     <main>
       <div>
