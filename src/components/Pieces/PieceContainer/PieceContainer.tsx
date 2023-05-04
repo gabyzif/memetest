@@ -17,9 +17,9 @@ interface IPieceContainer {
 }
 
 const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState, hasSessionData }) => {
-  const cardsStore = useSelector((state) => state.categories[category].cards);
-  const guessesStore = useSelector((state) => state.categories[category].guesses);
-  const movesStore = useSelector((state) => state.categories[category].moves);
+  const cardsStore = useSelector((state) => state.categories[category]?.cards);
+  const guessesStore = useSelector((state) => state.categories[category]?.guesses);
+  const movesStore = useSelector((state) => state.categories[category]?.moves);
 
   const {
     cards,
@@ -36,35 +36,47 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   } = useMemoryGame(piece, hasSessionData, cardsStore, guessesStore, movesStore);
 
   const router = useRouter();
-  const maxScore = useSelector((state) => state.categories[category].maxScore);
+  const maxScore = useSelector((state) => state.categories[category]?.maxScore);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!cards.length || !hasSessionData) return;
     dispatch(setCardsStore({ category, cards }));
-  }, [cards, router.query.name]);
+  }, [cards, router.query.name, hasSessionData]);
 
   useEffect(() => {
+    if (!moves || !hasSessionData) return;
     dispatch(setMovesStore({ category, moves }));
-  }, [moves]);
+  }, [moves, hasSessionData]);
 
   useEffect(() => {
+    if (!guesses.length || !hasSessionData) return;
     dispatch(setGuessesStore({ category, guesses }));
-  }, [guesses]);
+  }, [guesses, hasSessionData]);
 
   useEffect(() => {
-    if (Number(maxScore) < score) {
+    if (Number(maxScore) < score && hasSessionData) {
       dispatch(setMaxScoreStore({ category, maxScore: String(score) }));
     }
-  }, [score]);
+  }, [score, hasSessionData]);
 
   return (
     <Container height="auto" variant="tertiary">
-      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 justify-center ">
-        <div className="mb-10 col-span-4">
+      <div className="mb-10 col-span-4 flex md:mx-10 justify-between gap-10">
+        <div>
           <h1 className="text-5xl font-bold uppercase ">{category}</h1>
           <p className="text-3xl ">Moves: {moves}</p>
           <p className="text-3xl ">Max Score: </p>
         </div>
+        <div className="h-fit w-fit fixed z-10 right-10 shadow-lg flex gap-3 bg-tertiary-dark p-3 m-5 rounded-full">
+          <p className="text-2xl self-center">Actions</p>
+          <Button href="/" variant="secondary">
+            Back
+          </Button>
+          <button onClick={() => restart()}> Restart </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 justify-center justify-items-center">
         {cards.map(({ attributes: p, id }, i) => (
           <Piece
             onClick={() => handleCardClick(i)}
@@ -78,14 +90,6 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
         ))}
 
         {showModal && <Modal score={score} onClose={() => setShowModal(false)} />}
-      </div>
-      <div className="h-fit w-fit justify-end  ml-auto flex gap-3 bg-tertiary-dark p-3 m-5 rounded-full">
-        <p className="text-2xl self-center">Actions</p>
-
-        <Button href="/" variant="secondary">
-          Back
-        </Button>
-        <button onClick={() => restart()}> Restart </button>
       </div>
     </Container>
   );

@@ -16,6 +16,14 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories, score }) => {
     });
   };
 
+  const store = useSelector((state) => state.categories);
+
+  const checkIfHasAGameStarted = (c) => {
+    if (store[c] && !store[c].cards) {
+      return true;
+    }
+    return false;
+  };
   return (
     <div className="bg-secondary-light rounded-3xl p-10">
       <table className="w-full border-collapse">
@@ -42,7 +50,11 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories, score }) => {
                     </Button>
                   </div>
                   <div className="w-fit">
-                    <Button onClick={() => continueGame(c)} variant="tertiary">
+                    <Button
+                      onClick={() => continueGame(c)}
+                      variant="tertiary"
+                      disabled={checkIfHasAGameStarted(c)}
+                    >
                       Continue
                     </Button>
                   </div>
