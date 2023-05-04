@@ -40,17 +40,14 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!cards.length || !hasSessionData) return;
     dispatch(setCardsStore({ category, cards }));
   }, [cards, router.query.name, hasSessionData]);
 
   useEffect(() => {
-    if (!moves || !hasSessionData) return;
     dispatch(setMovesStore({ category, moves }));
   }, [moves, hasSessionData]);
 
   useEffect(() => {
-    if (!guesses.length || !hasSessionData) return;
     dispatch(setGuessesStore({ category, guesses }));
   }, [guesses, hasSessionData]);
 

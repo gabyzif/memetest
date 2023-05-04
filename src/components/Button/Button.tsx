@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
       {text ? <p className="font-bold ">{text}</p> : children}
     </Link>
   ) : (
-    <button onClick={onClick} className={classN}>
+    <button onClick={onClick} className={classN} disabled={disabled}>
       {text ? <p className="font-bold ">{text}</p> : children}
     </button>
   );

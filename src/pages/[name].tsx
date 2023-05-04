@@ -19,7 +19,7 @@ const Page = ({ game }) => {
 
   useEffect(() => {
     if (data) {
-      const category = router.query.name.replace('_', ' ');
+      const category = router.query.name;
       dispatch(setCards(category, data.data[0].attributes.images.data));
       dispatch(setScore(category, 0));
       dispatch(setMoves(category, router.query.sessionMoves || 0));
@@ -30,7 +30,7 @@ const Page = ({ game }) => {
     <Container width="auto">
       {data ? (
         <PieceContainer
-          category={router.query.name.replace('_', ' ')}
+          category={router.query.name}
           piece={data.data[0].attributes.images.data}
           hasSessionData={router.query.hasSessionData}
           sessionMoves={router.query.sessionMoves || ''}

@@ -10,7 +10,7 @@ export default function Home({ categories }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!storeCategories) {
+    if (!Object.keys(storeCategories).length) {
       const categoriesWithMaxScore = categories.reduce((acc, curr) => {
         acc[curr] = { maxScore: null };
         return acc;
@@ -20,6 +20,7 @@ export default function Home({ categories }) {
     }
   }, [categories, dispatch, storeCategories]);
 
+  console.log(storeCategories, categories);
   return (
     <main>
       <div>
