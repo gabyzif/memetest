@@ -6,9 +6,13 @@ import useStorage from '@/hooks/useStorage';
 import { selectCategory, setCategories, setCategoryList } from '@/store/slice';
 
 export default function Home({ categories }) {
+  const storeCategories = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    if (categories) {
+    if (!storeCategories) {
+      console.log('hee');
+
       const categoriesWithMaxScore = categories.reduce((acc, curr) => {
         acc[curr] = { maxScore: null };
         return acc;
@@ -16,9 +20,9 @@ export default function Home({ categories }) {
       dispatch(setCategoryList(categories));
       dispatch(setCategories(categoriesWithMaxScore));
     }
-  }, [categories, dispatch]);
+  }, [categories, dispatch, storeCategories]);
 
-  const store = useSelector((state) => state);
+  console.log(storeCategories, 'store in index');
 
   return (
     <main>
@@ -46,6 +50,7 @@ export async function getStaticProps() {
     const response = await fetch(`${process.env.STRAPI_URL}api/categories`);
     const data = await response.json();
     categories = data?.data || null;
+    console.log(categories);
     categories = categories?.map((category) => category.attributes.name);
   } catch (e) {
     categories = null;
