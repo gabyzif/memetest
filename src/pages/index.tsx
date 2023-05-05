@@ -34,8 +34,8 @@ export default function Home({ categories }) {
   return (
     <main>
       <div>
-        <Container variant="tertiary">
-          <Container width="80%" height="auto">
+        <Container variant="tertiary" height="fit-content">
+          <Container width="90%" height="auto">
             <div className="w-full py-10 ">
               <h1 className=" text-5xl mb-3 tracking-wide font-bold uppercase font-play">Memetest</h1>
               <p className=" font-thin">

@@ -50,8 +50,8 @@ const ListButtons: React.FC<ListButtonsProps> = ({ categories, score }) => {
               <td className="uppercase py-4 px-6">{c.replace('_', ' ')}</td>
               <td className="py-4 px-6">{getMaxScore(c) || '-'}</td>
               <td className="py-4 px-6">
-                <div className="flex gap-3 justify-end">
-                  <div className="w-fit">
+                <div className="md:flex center gap-3 justify-end">
+                  <div className="w-fit  my-2 md:my-0">
                     <Button href={c} variant="primary">
                       Start
                     </Button>
