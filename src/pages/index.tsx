@@ -8,6 +8,7 @@ import { selectCategory, setCategories, setCategoryList } from '@/store/slice';
 export default function Home({ categories }) {
   const storeCategories = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+  const { getItem, setItem } = useStorage();
 
   useEffect(() => {
     if (!Object.keys(storeCategories).length) {
@@ -20,6 +21,14 @@ export default function Home({ categories }) {
     }
   }, [categories, dispatch, storeCategories]);
 
+  useEffect(() => {
+    const storedData = getItem('persist:root', 'local');
+    const parsedData = storedData ? JSON.parse(storedData) : null;
+    const categoriesLS = parsedData ? JSON.parse(parsedData.categories) : null;
+    if (Object.keys(categoriesLS).length) {
+      dispatch(setCategories(categoriesLS));
+    }
+  }, []);
   return (
     <main>
       <div>
