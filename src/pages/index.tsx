@@ -10,6 +10,7 @@ export default function Home({ categories }) {
   const dispatch = useDispatch();
   const { getItem, setItem } = useStorage();
 
+  console.log(storeCategories);
   useEffect(() => {
     if (!Object.keys(storeCategories).length) {
       const categoriesWithMaxScore = categories.reduce((acc, curr) => {
@@ -25,7 +26,7 @@ export default function Home({ categories }) {
     const storedData = getItem('persist:root', 'local');
     const parsedData = storedData ? JSON.parse(storedData) : null;
     const categoriesLS = parsedData ? JSON.parse(parsedData.categories) : null;
-    if (Object.keys(categoriesLS).length) {
+    if (categoriesLS && Object.keys(categoriesLS).length) {
       dispatch(setCategories(categoriesLS));
     }
     return;
