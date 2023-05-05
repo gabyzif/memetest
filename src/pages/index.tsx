@@ -28,6 +28,7 @@ export default function Home({ categories }) {
     if (Object.keys(categoriesLS).length) {
       dispatch(setCategories(categoriesLS));
     }
+    return;
   }, []);
   return (
     <main>

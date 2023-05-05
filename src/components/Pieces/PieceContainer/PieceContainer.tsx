@@ -52,7 +52,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
   }, [guesses, hasSessionData]);
 
   useEffect(() => {
-    if (Number(maxScore) < score && hasSessionData) {
+    if (Number(maxScore) < score) {
       dispatch(setMaxScoreStore({ category, maxScore: String(score) }));
     }
   }, [score, hasSessionData]);
@@ -63,7 +63,7 @@ const PieceContainer: React.FC<IPieceContainer> = ({ piece, category, boardState
         <div>
           <h1 className="text-5xl font-bold uppercase ">{category}</h1>
           <p className="text-3xl ">Moves: {moves}</p>
-          <p className="text-3xl ">Max Score: </p>
+          <p className="text-3xl ">Max Score: {maxScore}</p>
         </div>
         <div className="h-fit w-fit fixed z-10 right-10 shadow-lg flex gap-3 bg-tertiary-dark p-3 m-5 rounded-full">
           <p className="text-2xl self-center">Actions</p>
